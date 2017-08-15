@@ -1,5 +1,5 @@
 Version='0.0.1'
 Authors=['Bartłomiej "furas" Burek <furas@tlen.pl>']
-Name=_('Get Current Track')
-Description=_('<NONE>')
+Name='TESTING'
+Description=_('For testing and learning.')
 Category=_('Development')
