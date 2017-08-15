@@ -1,0 +1,5 @@
+Version='0.0.1'
+Authors=['Bartłomiej "furas" Burek <furas@tlen.pl>']
+Name=_('Search On Internet')
+Description=_('Search title on the internet (Google.com, YouTube.com, Wrzuta.pl, ...)')
+Category=_('Development')

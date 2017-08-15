@@ -1,5 +1,0 @@
-Version='0.0.1'
-Authors=['Bartłomiej "furas" Burek <furas@tlen.pl>']
-Name=_('Search In Internet')
-Description=_('Search title in internet (Google.com, YouTube.com, Wrzuta.pl, ...)')
-Category=_('Development')
