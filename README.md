@@ -5,10 +5,17 @@ Plugins for music player __Exaile__:
 
   ![#1](images/exaile-search-on-internet-1.png?raw=true)   
   
-  It is usefull to search songs from radio stations (to lissten again).
+  It is usefull to search songs from radio stations (to download and listen again).
 
 - __testing__ - test some elements from source code of exaile and other plugins to learn how to write own plugin.
 
+    I try to learn:
+    - what menus are available
+    - how to get access to current playing track 
+    - how to add item in context menu on playlist
+    - how to add submenu in context menu on playlist (and have access to selected files)
+    - how to get selected track name and open in browser
+    - how to get selected track name and save in text file
 
 ---
 
@@ -16,7 +23,7 @@ Exaile: [WebPage](http://www.exaile.org/), [GitHub](https://github.com/exaile/ex
 
 ---
 
-On Linux put in user folder
+On Linux put in user's folder
 
     ~/.local/share/exaile/plugins
     
