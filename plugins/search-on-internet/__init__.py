@@ -10,8 +10,9 @@ DATA = (
     ('YouTube.com', 'https://www.youtube.com/results?search_query=%s'),
     ('Vimeo.com', 'https://vimeo.com/search?q=%s'),
     ('Vimeo.com (category: music)', 'https://vimeo.com/search?category=music&q=%s'),
-    ('Wrzuta.pl', 'http://www.wrzuta.pl/szukaj/%s'),
-    ('Wrzuta.pl (category: music)', 'http://www.wrzuta.pl/szukaj/audio/%s'),
+#    ('Wrzuta.pl', 'http://www.wrzuta.pl/szukaj/%s'),
+#    ('Wrzuta.pl (category: music)', 'http://www.wrzuta.pl/szukaj/audio/%s'),
+    ('SoundCloud.com', 'https://soundcloud.com/search?q=%s'),
 )
 
 class SearchOnInternetPlugin(object):
