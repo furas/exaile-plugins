@@ -1,48 +1,74 @@
 #!/usr/bin/env python3
 
-from xl import player, event, providers #common, settings
+from xl import player, event, providers, settings #common, 
 
 from xlgui.widgets import menu, menuitems
 
 import urllib, webbrowser
 
-DATA = (
-    ('Google.pl', 'https://www.google.pl/search?q=%s'),
-    ('YouTube.com', 'https://www.youtube.com/results?search_query=%s'),
-    ('Wrzuta.pl', 'http://www.wrzuta.pl/szukaj/%s'),
-)
+DATA = [
+    # default value if can't read from 'settings.ini' [plugin/testing/search]
+    ['Google.com', 'https://www.google.com/search?q=%s'],
+    ['YouTube.com', 'https://www.youtube.com/results?search_query=%s'],
+    ['Vimeo.com', 'https://vimeo.com/search?q=%s'],
+    ['Vimeo.com [category: music]', 'https://vimeo.com/search?category=music&q=%s'],
+    ['SoundCloud.com', 'https://soundcloud.com/search?q=%s'],
+]
 
-class GetCurrentTrack(object):
+class Testing(object):
     
     def display(self, name, player, track=None):
-        print 'GetCurrentTrack:', name
-        print 'GetCurrentTrack:  player:', player
-        print 'GetCurrentTrack: current:', player.current
+        print '---------------------------------'
+        print 'TESTING: display(name, player, track)'
+        print 'TESTING: ------------------------'
+        print 'TESTING:     name:', name
+        print 'TESTING:   player:', player
+        print 'TESTING:    track:', track
+        print 'TESTING: ------------------------'
+        print 'TESTING: player.current:', player.current
+        
         if track:
-            #print dir(track)
-            #print track.list_tags()
-            print 'GetCurrentTrack:   track:', track
+            print 'TESTING: track.list_tags():', track.list_tags()
+            print 'TESTING: track:', track
             for tag in ('title', 'album', 'artist', 'tracknumber', '__loc', '__basename'):
                 data = track.get_tag_display(tag)
-                print 'GetCurrentTrack: %11s:' % tag, data
+                print 'TESTING: tag: %11s =' % tag, data
+
+        print '---------------------------------'
         
+    def other(self, name):
+        global DATA
+        print 'TESTING: other(name)'
+        print 'TESTING: ------------------------'
+        print 'TESTING:     name:', name
+        print 'TESTING: ------------------------'
+        print "TESTING: settings.get_option('plugin/testing/search'):", settings.get_option('plugin/testing/search', DEFAULT_DATA)
+        DATA = settings.set_option('plugin/testing/search', DEFAULT_DATA)
+        print 'TESTING: ------------------------'
+
+    # -----------------------------------------------------------------
+    
     def enable(self, exaile):
         self.player = player.PLAYER
         
         self.display('enable', player.PLAYER)
+        self.other('enable')
 
         event.add_callback(self.on_playback_start, 'playback_track_start')
 
     def disable(self, exaile):
         self.display('disable', player.PLAYER)
+        self.other('disable')
 
     def teardown(self, exaile):
         self.display('teardown', player.PLAYER)
+        self.other('teardown')
 
         event.remove_callback(self.on_playback_start, 'playback_track_start')
 
     def on_gui_loaded(self):
         self.display('on_gui_loaded', player.PLAYER)
+        self.other('on_gui_loaded')
 
         ### main menu / tools ###
         
@@ -57,40 +83,48 @@ class GetCurrentTrack(object):
         
         self.create_menu()
         
-        #print 'GetCurrentTrack: register menu'
+        #print 'TESTING: register menu'
         
     def item_register(self, item, menu):
-        print ' item.register(', menu, ')'
+        print '---------------------------------'
+        print 'TESTING: item.register(', menu, ')'
+        print '---------------------------------'
         item.register(menu)
         
     def provider_register(self, item, menu):
-        print ' provider.register(', menu, ')'
+        print '---------------------------------'
+        print 'TESTING: provider.register(', menu, ')'
+        print '---------------------------------'
         providers.register(menu, item)
         
     def test_callback(self, window, name, parent, context):
-        print 'GetCurrentTrack: test_callback:'
-        print '   window:', window
-        print '     name:', name
-        print '   parent:', parent
-        print '  context:', context
-        print '    dir():'
+        print '---------------------------------'
+        print 'TESTING: test_callback(window, name, parent, context)'
+        print 'TESTING: ------------------------'
+        print 'TESTING:    window:', window
+        print 'TESTING:      name:', name
+        print 'TESTING:    parent:', parent
+        print 'TESTING:   context:', context
+        print 'TESTING: ------------------------'
+        print 'TESTING: dir(parent):'
         for x in dir(parent):
-            print x
+            print 'TESTING:  ->', x
         
-        print ' items:'
+        print 'TESTING: ------------------------'
+        print 'TESTING: items:'
         for item in parent.get_selected_items():
-            print item
-            print 'type:', type(item)
-            #print 'dir():', dir(item)
-            print '-------------------'
+            print 'TESTING:  -> item:', item
+            print 'TESTING:  -> type(item):', type(item)
+            print 'TESTING:  -----'
             
-        print ' paths:' 
+        print 'TESTING: ------------------------'
+        print 'TESTING: paths:' 
         for path in parent.get_selected_paths():
-            print path
-            print 'type:', type(path)
-            #print 'dir():', dir(path)
-            print '-------------------'
+            print 'TESTING:  -> path:', path
+            print 'TESTING:  -> type(path):', type(path)
+            print 'TESTING:  -----'
 
+        print 'TESTING: ------------------------'
         print 'tracks:', parent.get_selected_tracks()
         for track in parent.get_selected_tracks():
             print track
@@ -112,11 +146,14 @@ class GetCurrentTrack(object):
                 artist = track.get_tag_display('artist')
                 title = track.get_tag_display('title')
                 f.write('%s,%s\n' % (artist,  title))
+        print '---------------------------------'
         
     ### main menu / tools ###
         
     def on_view_menu(self, widget, name, parent, context):
-        print 'GetCurrentTrack: on_view_menu:'
+        print '---------------------------------'
+        print 'TESTING: on_view_menu(widget, name, parent, context)'
+        print 'TESTING: ------------------------'
         #~ if self.window:
             #~ self.window.present()
         #~ else:
@@ -127,12 +164,15 @@ class GetCurrentTrack(object):
 
             #~ self.window.connect('delete-event', _delete)
             #~ self.window.show_all()
+        print '---------------------------------'
 
     def on_exaile_loaded(self):
         self.display('on_exaile_loaded', player.PLAYER)
+        self.other('on_exaile_loaded')
     
     def on_playback_start(self, type, player, track):
         self.display('on_playback_start', player, track)
+        self.other('on_playback_start')
 
     ### menu ###
     
@@ -184,7 +224,8 @@ class GetCurrentTrack(object):
             #print(dir(item))
             self.provider_register(item, 'playlist-context-menu')
 
-        print 'GetCurrentTrack: register menu #1'
+        print '---------------------------------'
+        print 'TESTING: register menu #1'
         
         ### submenu ###
 
@@ -210,30 +251,35 @@ class GetCurrentTrack(object):
         self.provider_register(item, 'playlist-context-menu')
                 
                 
-        print 'self.submenu._items:'
+        print 'TESTING: self.submenu._items:'
         print self.submenu._items
-            
-        print 'GetCurrentTrack: register menu #2'
+        print '---------------------------------'
+        print 'TESTING: register menu #2'
 
         for p in providers.get('playlist-context-menu'):
-            print ' p:', p.name, p._pos, p.after
+            print 'TESTING:  -> menu:', p.name, p._pos, p.after
+        print '---------------------------------'
         
 
     def webbrowser_cb(self, window, name, parent, context, url):
-        print 'GetCurrentTrack: webbrowser_cb:'
-        print '         window:', window
-        print '           name:', name
-        print '         parent:', parent
-        print '        context:', context
-        print '            url:', url
+        print '---------------------------------'
+        print 'TESTING: webbrowser_cb(window, name, parent, context, url)'
+        print 'TESTING: ------------------------'
+        print 'TESTING:   window:', window
+        print 'TESTING:     name:', name
+        print 'TESTING:   parent:', parent
+        print 'TESTING:  context:', context
+        print 'TESTING:      url:', url
+        print 'TESTING: ------------------------'
         
         for track in parent.get_selected_tracks():
             title = track.get_tag_display('title')
-            print 'GetCurrentTrack: selected_track:', title
+            print 'TESTING: selected_track:', title
             title = urllib.quote_plus(title)
             webbrowser.open(url % title)
+        print '---------------------------------'
     
-plugin_class = GetCurrentTrack
+plugin_class = Testing
 
 ### events
 
